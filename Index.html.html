@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jérémy & Justine — 10 octobre 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  /* ============================================================
+     SITE MARIAGE — Jérémy & Justine — 10 octobre 2026
+     Fichier HTML autonome, prêt pour Netlify.
+     Palette neutre & raffinée, mobile-first.
+     ============================================================ */
+
+  /* ---- Palette centralisée (modifiable ici) ---- */
+  :root {
+    --ivoire:#FBF8F3; --sable:#EFE7DA; --sauge:#8A9A82;
+    --sauge-fonce:#6E7E66; --taupe:#A89F92; --anthracite:#3A3A38; --blanc:#FFFFFF;
+  }
+
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body {
+    background:var(--ivoire); color:var(--anthracite);
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ---- En-tête ---- */
+  header { text-align:center; padding:64px 20px 40px; max-width:700px; margin:0 auto; }
+  header h1 {
+    font-family:'Playfair Display',serif; font-weight:400;
+    font-size:clamp(40px,9vw,64px); line-height:1.1; margin-bottom:8px;
+  }
+  header h1 .amp { color:var(--sauge); }
+  .date {
+    font-family:'Playfair Display',serif; font-size:20px;
+    color:var(--taupe); font-style:italic;
+  }
+
+  /* ---- Compte à rebours ---- */
+  .cr { display:flex; justify-content:center; gap:24px; margin-top:24px; flex-wrap:wrap; }
+  .cr-item { text-align:center; min-width:52px; }
+  .cr-num { font-family:'Playfair Display',serif; font-size:34px; line-height:1; }
+  .cr-lab { font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--taupe); margin-top:6px; }
+
+  /* ---- Navigation onglets ---- */
+  nav {
+    display:flex; justify-content:center; gap:8px; padding:12px 16px; flex-wrap:wrap;
+    position:sticky; top:0; z-index:10;
+    background:rgba(251,248,243,.95); backdrop-filter:blur(8px);
+  }
+  .tab {
+    padding:10px 22px; border:none; background:transparent; cursor:pointer;
+    font-family:inherit; font-size:17px; letter-spacing:1px; color:var(--taupe);
+    position:relative; transition:color .25s ease;
+  }
+  .tab.active { color:var(--anthracite); }
+  .tab::after {
+    content:""; position:absolute; left:50%; bottom:2px; transform:translateX(-50%);
+    width:0; height:2px; background:var(--sauge); transition:width .3s ease;
+  }
+  .tab.active::after { width:22px; }
+
+  /* ---- Contenu ---- */
+  main { max-width:700px; margin:0 auto; padding:36px 20px 80px; }
+  .panel { display:none; animation:fade .4s ease; }
+  .panel.active { display:block; }
+  @keyframes fade { from{opacity:0;transform:translateY(8px);} to{opacity:1;transform:translateY(0);} }
+
+  /* ---- Cartes lieux ---- */
+  .card {
+    background:var(--blanc); border-radius:12px; padding:32px 28px;
+    box-shadow:0 1px 20px rgba(0,0,0,.04); margin-bottom:32px;
+  }
+  .card .sur { color:var(--sauge); letter-spacing:3px; text-transform:uppercase; font-size:12px; }
+  .card h3 { font-family:'Playfair Display',serif; font-size:28px; font-weight:500; margin:8px 0 18px; }
+  .card p { line-height:1.7; margin-bottom:8px; font-size:15px; }
+
+  /* ---- Emplacement image plan d'accès ---- */
+  .plan {
+    width:100%; aspect-ratio:16/9; background:var(--sable);
+    border:1px dashed var(--taupe); border-radius:8px;
+    display:flex; align-items:center; justify-content:center;
+    color:var(--taupe); font-size:13px; text-align:center; padding:16px; margin-top:20px;
+  }
+  .plan img { width:100%; height:100%; object-fit:cover; border-radius:8px; }
+
+  /* ---- Bouton itinéraire ---- */
+  .btn-maps {
+    display:inline-block; margin-top:16px; padding:11px 22px;
+    background:var(--sauge); color:var(--blanc); text-decoration:none;
+    border-radius:30px; font-size:13px; letter-spacing:1px; transition:background .3s ease;
+  }
+  .btn-maps:hover { background:var(--sauge-fonce); }
+
+  /* ---- Formulaire RSVP ---- */
+  .form-card {
+    background:var(--blanc); border-radius:12px; padding:32px 28px;
+    box-shadow:0 1px 20px rgba(0,0,0,.04); display:grid; gap:22px;
+  }
+  label.lab {
+    display:block; font-size:13px; letter-spacing:1px; color:var(--taupe);
+    text-transform:uppercase; margin-bottom:8px;
+  }
+  .inp {
+    width:100%; padding:12px 14px; border:1px solid var(--sable); border-radius:8px;
+    background:var(--ivoire); color:var(--anthracite); font-size:15px;
+    font-family:inherit; outline:none;
+  }
+  .inp:focus { border-color:var(--sauge); }
+  .inp::placeholder { color:var(--taupe); opacity:.6; }
+  .choices { display:flex; gap:12px; }
+  .choice {
+    flex:1; padding:12px 10px; border-radius:8px; border:1px solid var(--sable);
+    background:var(--ivoire); color:var(--anthracite); font-size:14px; cursor:pointer;
+    font-family:inherit; transition:all .25s ease; text-align:center;
+  }
+  .choice.sel { background:var(--sauge); border-color:var(--sauge); color:var(--blanc); }
+  .num-choices { display:flex; gap:8px; flex-wrap:wrap; }
+  .num {
+    width:46px; height:46px; border-radius:8px; border:1px solid var(--sable);
+    background:var(--ivoire); color:var(--anthracite); font-size:15px; cursor:pointer;
+    font-family:inherit; transition:all .25s ease;
+  }
+  .num.sel { background:var(--sauge); border-color:var(--sauge); color:var(--blanc); }
+  .invite {
+    background:var(--ivoire); border:1px solid var(--sable); border-radius:10px;
+    padding:20px 18px; display:grid; gap:16px;
+  }
+  .invite .titre { font-family:'Playfair Display',serif; font-size:17px; color:var(--sauge); }
+  .invite .inp { background:var(--blanc); }
+  .invite .choice { background:var(--blanc); }
+  .invite .choice.sel { background:var(--sauge); }
+  .err { color:#B4524A; font-size:12px; margin-top:6px; }
+  .btn-send {
+    padding:14px 22px; background:var(--anthracite); color:var(--blanc); border:none;
+    border-radius:30px; font-size:14px; letter-spacing:1.5px; cursor:pointer;
+    font-family:inherit; transition:opacity .25s ease;
+  }
+  .btn-send:disabled { opacity:.6; cursor:default; }
+
+  /* ---- Écran de confirmation ---- */
+  .merci {
+    background:var(--blanc); border-radius:12px; padding:48px 28px; text-align:center;
+    box-shadow:0 1px 20px rgba(0,0,0,.04);
+  }
+  .merci .coeur { font-size:40px; color:var(--sauge); }
+  .merci h3 { font-family:'Playfair Display',serif; font-size:26px; font-weight:500; margin:12px 0 8px; }
+  .merci p { color:var(--taupe); line-height:1.7; max-width:380px; margin:0 auto; }
+
+  /* ---- FAQ accordéon ---- */
+  .faq-item {
+    background:var(--blanc); border-radius:12px; overflow:hidden;
+    box-shadow:0 1px 20px rgba(0,0,0,.04); margin-bottom:12px;
+  }
+  .faq-q {
+    width:100%; text-align:left; padding:20px 22px; background:transparent; border:none;
+    cursor:pointer; display:flex; justify-content:space-between; align-items:center;
+    gap:16px; font-family:inherit;
+  }
+  .faq-q span:first-child { font-family:'Playfair Display',serif; font-size:18px; color:var(--anthracite); }
+  .faq-plus { color:var(--sauge); font-size:22px; flex-shrink:0; transition:transform .3s ease; }
+  .faq-item.open .faq-plus { transform:rotate(45deg); }
+  .faq-a { max-height:0; overflow:hidden; transition:max-height .4s ease; }
+  .faq-item.open .faq-a { max-height:300px; }
+  .faq-a p { padding:0 22px 22px; color:var(--taupe); line-height:1.7; font-size:15px; }
+
+  /* ---- Pied de page ---- */
+  footer { text-align:center; padding:32px 20px; color:var(--taupe); font-size:12px; letter-spacing:1px; }
+</style>
+</head>
+<body>
+
+  <!-- ============================================================
+       FORMULAIRE FANTÔME POUR NETLIFY
+       Netlify scanne le HTML au déploiement et détecte ce formulaire
+       grâce à data-netlify="true". Il doit lister TOUS les champs
+       envoyés. Il reste caché ; le vrai formulaire visible est plus bas.
+       NE PAS SUPPRIMER.
+       ============================================================ -->
+  <form name="rsvp" data-netlify="true" netlify-honeypot="bot-field" hidden>
+    <input type="text" name="nombre" />
+    <input type="text" name="presence" />
+    <input type="text" name="personne1_nom" />
+    <input type="text" name="personne1_repas" />
+    <input type="text" name="personne2_nom" />
+    <input type="text" name="personne2_repas" />
+    <input type="text" name="allergies" />
+  </form>
+
+  <!-- EN-TÊTE -->
+  <header>
+    <h1>Jérémy <span class="amp">&amp;</span> Justine</h1>
+    <p class="date">10 octobre 2026</p>
+    <div class="cr" id="countdown"></div>
+  </header>
+
+  <!-- NAVIGATION -->
+  <nav>
+    <button class="tab active" data-tab="infos">Informations</button>
+    <button class="tab" data-tab="rsvp">Participation</button>
+    <button class="tab" data-tab="faq">FAQ</button>
+  </nav>
+
+  <main>
+    <!-- ===================== ONGLET INFORMATIONS ===================== -->
+    <section class="panel active" id="panel-infos">
+      <div class="card">
+        <p class="sur">Cérémonie religieuse</p>
+        <h3>Église de Venthône</h3>
+        <p>Le 10 octobre 2026 à 14h30.</p>
+        <p>Parking disponible à l'école de Venthône, à 4 minutes de marche (290 m).</p>
+        <!-- ↓↓↓ PLAN D'ACCÈS : décommentez la balise img et mettez votre fichier ↓↓↓ -->
+        <div class="plan">
+          <!-- <img src="plan-venthone.jpg" alt="Plan d'accès — Église de Venthône" /> -->
+          [ Emplacement image — plan d'accès : Église de Venthône ]
+        </div>
+        <a class="btn-maps" href="https://maps.app.goo.gl/ux9SCuM8z2Cq6EH87" target="_blank" rel="noopener noreferrer">Itinéraire Google Maps →</a>
+      </div>
+
+      <div class="card">
+        <p class="sur">Réception</p>
+        <h3>Château de Loèche</h3>
+        <p>À partir de 15h30, le 10 octobre 2026 — à Leuk.</p>
+        <p>Parking à l'école de Leuk, ou à proximité du château pour les premiers arrivés (5 min, 850 m).</p>
+        <!-- ↓↓↓ PLAN D'ACCÈS : décommentez la balise img et mettez votre fichier ↓↓↓ -->
+        <div class="plan">
+          <!-- <img src="plan-leuk.jpg" alt="Plan d'accès — Château de Loèche" /> -->
+          [ Emplacement image — plan d'accès : Château de Loèche (Leuk) ]
+        </div>
+        <a class="btn-maps" href="https://maps.app.goo.gl/U9Kv2dFaL9y7oAsf7" target="_blank" rel="noopener noreferrer">Itinéraire Google Maps →</a>
+      </div>
+    </section>
+
+    <!-- ===================== ONGLET PARTICIPATION ===================== -->
+    <section class="panel" id="panel-rsvp">
+      <form name="rsvp-visible" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="form-card" id="rsvp-form">
+        <!-- Champ technique requis par Netlify pour relier au formulaire nommé -->
+        <input type="hidden" name="form-name" value="rsvp" />
+        <!-- Anti-spam (honeypot) : caché aux humains -->
+        <p hidden><label>Ne pas remplir : <input name="bot-field" /></label></p>
+
+        <!-- 1. Nombre de personnes -->
+        <div>
+          <label class="lab">Nombre de personnes</label>
+          <div class="num-choices" id="num-choices"></div>
+          <input type="hidden" name="nombre" id="f-nombre" value="1" />
+        </div>
+
+        <!-- 2. Présence -->
+        <div>
+          <label class="lab">Confirmation de présence</label>
+          <div class="choices">
+            <button type="button" class="choice" data-presence="Oui">Je serai présent·e</button>
+            <button type="button" class="choice" data-presence="Non">Je ne pourrai pas venir</button>
+          </div>
+          <input type="hidden" name="presence" id="f-presence" value="" />
+          <div class="err" id="err-presence" style="display:none">Merci de confirmer votre présence.</div>
+        </div>
+
+        <!-- 3. Blocs invités (générés dynamiquement) -->
+        <div id="invites-zone"></div>
+
+        <!-- 4. Allergies -->
+        <div id="allergies-zone">
+          <label class="lab">Allergies ou intolérances</label>
+          <input class="inp" type="text" name="allergies" placeholder="Optionnel — précisez la personne concernée si besoin" />
+        </div>
+
+        <!-- 5. Envoi -->
+        <button type="submit" class="btn-send" id="btn-send">Envoyer ma réponse</button>
+      </form>
+
+      <!-- Écran de confirmation (affiché après envoi) -->
+      <div class="merci" id="merci" style="display:none">
+        <div class="coeur">♥</div>
+        <h3>Merci pour votre réponse !</h3>
+        <p>Nous avons bien noté votre participation. Au plaisir de partager ce moment avec vous.</p>
+      </div>
+    </section>
+
+    <!-- ===================== ONGLET FAQ ===================== -->
+    <section class="panel" id="panel-faq">
+      <div id="faq-zone"></div>
+    </section>
+  </main>
+
+  <footer>Jérémy &amp; Justine — 10.10.2026 · Venthône &amp; Loèche</footer>
+
+<script>
+  /* ============================================================
+     CONFIG — modifiable ici
+     ============================================================ */
+  var DATE_MARIAGE = new Date("2026-10-10T14:30:00+02:00");
+  var MAX_PERSONNES = 2;
+
+  /* ---- DONNÉES FAQ : ajoutez/retirez/modifiez ici uniquement ---- */
+  var FAQ = [
+    {
+      question: "Quel est le code vestimentaire ?",
+      reponse: "Tenue de ville souhaitée. Pour les messieurs : costume. Pour les dames : robe ou ensemble habillé."
+    },
+    {
+      question: "Cadeaux",
+      reponse: "Votre présence est notre plus beau cadeau. Si toutefois vous souhaitez nous gâter, une participation à notre voyage de noces nous comblerait."
+    },
+    {
+      question: "Animation",
+      reponse: "Une petite activité-surprise se prépare pour le grand jour. Si vous avez des photos avec les futurs mariés à partager, transmettez-les à Romain Zuber (+41 79 895 40 23)."
+    }
+  ];
+
+  /* ============================================================
+     NAVIGATION ONGLETS
+     ============================================================ */
+  document.querySelectorAll(".tab").forEach(function(tab){
+    tab.addEventListener("click", function(){
+      document.querySelectorAll(".tab").forEach(function(t){ t.classList.remove("active"); });
+      document.querySelectorAll(".panel").forEach(function(p){ p.classList.remove("active"); });
+      tab.classList.add("active");
+      document.getElementById("panel-" + tab.dataset.tab).classList.add("active");
+    });
+  });
+
+  /* ============================================================
+     COMPTE À REBOURS
+     ============================================================ */
+  function majCompteARebours(){
+    var diff = DATE_MARIAGE.getTime() - Date.now();
+    var el = document.getElementById("countdown");
+    if (diff <= 0) { el.innerHTML = '<p style="color:var(--sauge);font-style:italic">C\'est aujourd\'hui ♥</p>'; return; }
+    var j = Math.floor(diff/86400000);
+    var h = Math.floor((diff/3600000)%24);
+    var m = Math.floor((diff/60000)%60);
+    var s = Math.floor((diff/1000)%60);
+    var items = [[j,"jours"],[h,"heures"],[m,"min"],[s,"sec"]];
+    el.innerHTML = items.map(function(it){
+      return '<div class="cr-item"><div class="cr-num">' +
+        String(it[0]).padStart(2,"0") + '</div><div class="cr-lab">' + it[1] + '</div></div>';
+    }).join("");
+  }
+  majCompteARebours();
+  setInterval(majCompteARebours, 1000);
+
+  /* ============================================================
+     FORMULAIRE RSVP
+     ============================================================ */
+  var nombre = 1;
+  var presence = "";
+
+  // -- Adapte le texte des boutons de présence au nombre (singulier / pluriel) --
+  function majTextesPresence(){
+    var btnOui = document.querySelector('[data-presence="Oui"]');
+    var btnNon = document.querySelector('[data-presence="Non"]');
+    if (nombre >= 2) {
+      btnOui.textContent = "Nous serons présent·e·s";
+      btnNon.textContent = "Nous ne pourrons pas venir";
+    } else {
+      btnOui.textContent = "Je serai présent·e";
+      btnNon.textContent = "Je ne pourrai pas venir";
+    }
+  }
+
+  // -- Sélecteur de nombre --
+  var numZone = document.getElementById("num-choices");
+  for (var n = 1; n <= MAX_PERSONNES; n++) {
+    (function(val){
+      var b = document.createElement("button");
+      b.type = "button"; b.className = "num" + (val === 1 ? " sel" : ""); b.textContent = val;
+      b.addEventListener("click", function(){
+        nombre = val;
+        document.getElementById("f-nombre").value = val;
+        document.querySelectorAll(".num").forEach(function(x){ x.classList.remove("sel"); });
+        b.classList.add("sel");
+        majTextesPresence();
+        rendreInvites();
+      });
+      numZone.appendChild(b);
+    })(n);
+  }
+  majTextesPresence();
+
+  // -- Présence --
+  document.querySelectorAll("[data-presence]").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      presence = btn.dataset.presence;
+      document.getElementById("f-presence").value = presence;
+      document.querySelectorAll("[data-presence]").forEach(function(x){ x.classList.remove("sel"); });
+      btn.classList.add("sel");
+      document.getElementById("err-presence").style.display = "none";
+      // Masque les blocs invités + allergies si absence
+      var visible = presence !== "Non";
+      document.getElementById("invites-zone").style.display = visible ? "" : "none";
+      document.getElementById("allergies-zone").style.display = visible ? "" : "none";
+    });
+  });
+
+  // -- Génération des blocs invités selon le nombre --
+  function rendreInvites(){
+    var zone = document.getElementById("invites-zone");
+    var anciens = {}; // conserve les saisies déjà faites
+    zone.querySelectorAll("input.inp").forEach(function(inp){ anciens[inp.name] = inp.value; });
+    var selRepas = {};
+    zone.querySelectorAll(".choice.sel").forEach(function(c){ selRepas[c.dataset.cible] = c.dataset.repas; });
+
+    zone.innerHTML = "";
+    for (var i = 1; i <= nombre; i++) {
+      var nomVal = anciens["personne"+i+"_nom"] || "";
+      var repasVal = selRepas["personne"+i+"_repas"] || "Normal";
+      var bloc = document.createElement("div");
+      bloc.className = "invite";
+      bloc.innerHTML =
+        '<div class="titre">Personne ' + i + '</div>' +
+        '<div>' +
+          '<label class="lab">Nom / Prénom</label>' +
+          '<input class="inp" type="text" name="personne'+i+'_nom" placeholder="Ex. Marie Dupont" value="'+ nomVal.replace(/"/g,'&quot;') +'" />' +
+        '</div>' +
+        '<div>' +
+          '<label class="lab">Choix du repas</label>' +
+          '<div class="choices">' +
+            '<button type="button" class="choice'+(repasVal==="Normal"?" sel":"")+'" data-cible="personne'+i+'_repas" data-repas="Normal">Normal</button>' +
+            '<button type="button" class="choice'+(repasVal==="Végétarien"?" sel":"")+'" data-cible="personne'+i+'_repas" data-repas="Végétarien">Végétarien</button>' +
+          '</div>' +
+          '<input type="hidden" name="personne'+i+'_repas" value="'+ repasVal +'" />' +
+        '</div>';
+      zone.appendChild(bloc);
+    }
+    // Activer les boutons repas du nouveau rendu
+    zone.querySelectorAll(".choice").forEach(function(btn){
+      btn.addEventListener("click", function(){
+        var cible = btn.dataset.cible;
+        btn.parentNode.querySelectorAll(".choice").forEach(function(x){ x.classList.remove("sel"); });
+        btn.classList.add("sel");
+        btn.parentNode.parentNode.querySelector('input[name="'+cible+'"]').value = btn.dataset.repas;
+      });
+    });
+  }
+  rendreInvites();
+
+  /* ============================================================
+     ENVOI — soumission gérée par Netlify Forms.
+     On valide, puis on laisse Netlify recevoir les données.
+     (Aucun endpoint à configurer : Netlify capte le POST.)
+     ============================================================ */
+  var form = document.getElementById("rsvp-form");
+  form.addEventListener("submit", function(e){
+    // Validation présence obligatoire
+    if (!presence) {
+      e.preventDefault();
+      document.getElementById("err-presence").style.display = "block";
+      return;
+    }
+    // Validation noms si présence = Oui
+    if (presence === "Oui") {
+      var manque = false;
+      form.querySelectorAll('#invites-zone input.inp').forEach(function(inp){
+        if (!inp.value.trim()) manque = true;
+      });
+      if (manque) {
+        e.preventDefault();
+        alert("Merci d'indiquer le nom de chaque personne.");
+        return;
+      }
+    }
+    // Validation OK → on laisse Netlify traiter l'envoi (POST natif).
+    // L'écran de confirmation s'affiche via le paramètre d'URL au retour (voir plus bas),
+    // ou Netlify redirige vers sa page de succès par défaut.
+  });
+
+  // Affiche l'écran de remerciement si on revient avec ?merci=1
+  // (Netlify peut être configuré pour rediriger vers index.html?merci=1)
+  if (location.search.indexOf("merci=1") !== -1) {
+    var rf = document.getElementById("rsvp-form");
+    if (rf) rf.style.display = "none";
+    var mr = document.getElementById("merci");
+    if (mr) mr.style.display = "block";
+    // Ouvre l'onglet Participation automatiquement
+    document.querySelectorAll(".tab").forEach(function(t){ t.classList.remove("active"); });
+    document.querySelectorAll(".panel").forEach(function(p){ p.classList.remove("active"); });
+    var tabR = document.querySelector('[data-tab="rsvp"]');
+    if (tabR) { tabR.classList.add("active"); document.getElementById("panel-rsvp").classList.add("active"); }
+  }
+
+  /* ============================================================
+     FAQ — accordéon généré depuis le tableau FAQ
+     ============================================================ */
+  var faqZone = document.getElementById("faq-zone");
+  FAQ.forEach(function(item){
+    var div = document.createElement("div");
+    div.className = "faq-item";
+    div.innerHTML =
+      '<button class="faq-q"><span>' + item.question + '</span><span class="faq-plus">+</span></button>' +
+      '<div class="faq-a"><p>' + item.reponse + '</p></div>';
+    div.querySelector(".faq-q").addEventListener("click", function(){
+      div.classList.toggle("open");
+    });
+    faqZone.appendChild(div);
+  });
+</script>
+</body>
+</html>
